@@ -1,9 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
+#include <vector>
+#include <memory>
 #include "Point3D.h"
-#include "curves/Curve.h"
 #include "curves/Circle.h"
+#include "curves/Ellipse.h"
+#include "curves/Helix.h"
 
 int main(int argc, char* argv[]) {
 
@@ -21,48 +25,67 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-
-    int line_number = 0;
-
-    if (!(file >> line_number)) {
-        std::cerr << "Unable to read number of lines" << std::endl;
-    }
-
-    std::cout << line_number << std::endl;
-
     std::string line = "";
 
-    while (std::getline(file, line)) {
+    int line_number = 0;
+    std::getline(file, line);
+
+    try {
+
+        line_number = std::stoi(line);
+    } 
+    catch (const std::invalid_argument& e) {
+        std::cerr << "Unable to read number of lines: " << e.what() << std::endl; 
+        return 1;
+    }
+    
+    std::cout << line_number << std::endl;
+
+    std::vector<std::shared_ptr<Curve>> curves;
+    curves.reserve(line_number);
+
+    for (int i = 0; i < line_number && std::getline(file, line); i++) {
 
         std::stringstream ss(line);
 
         std::cout << line << "\n";
 
-        std::string curve_type = "";
+        char curve_type;
         std::string curve_name = "";
         size_t id = 0;
-        double x, y, z;
         Point3D center;
+        double radius;
 
-        ss >> curve_type;
-        std::cout << curve_type << "\n";
+        if (!(ss >> curve_type >> id >> std::quoted(curve_name) >> center.x >> 
+                                                                   center.y >> 
+                                                                   center.z >>
+                                                                   radius)) {
 
-        ss >> id;
-        std::cout << id << "\n";
+            std::cerr << "Unable to parse line: " << "\"" << line << "\"" << "\n";
+            return 1;
+        }
 
-        ss >> curve_name;
-        std::cout << curve_name << "\n";
+        if (curve_type == 'C') {
+            
+            curves.emplace_back(std::make_shared<Circle>(Circle(id, curve_name, center, radius)));
 
-        ss >> x;
-        std::cout << x << "\n";
+        }
+        else if (curve_type == 'E') {
 
-        ss >> y;
-        std::cout << y << "\n";
+            double minor_radius = 0.0;
+            ss >> minor_radius;
 
-        ss >> z;
-        std::cout << z << "\n";
+            curves.emplace_back(std::make_shared<Ellipse>(Ellipse(id, curve_name, center, radius, minor_radius)));
+        }
+        else if (curve_type == 'H') {
+
+            double step = 0.0;
+            ss >> step;
+
+            curves.emplace_back(std::make_shared<Helix>(Helix(id, curve_name, center, radius, step)));
+
+        }
     }
-
-
+    
     return 0;
 }
