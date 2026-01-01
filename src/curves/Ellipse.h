@@ -9,9 +9,10 @@ public:
 
     ~Ellipse() = default;
 
-    Ellipse(size_t id, std::string name, Point3D center, double major_radius, double minor_radius): Curve(id, name, center), 
-                                                                                                    major_radius(major_radius),
-                                                                                                    minor_radius(minor_radius) {};
+    Ellipse(size_t id, std::string name, Point3D center, double major_radius, double minor_radius);
+
+    Point3D point(double t) const override;
+    Point3D derivative(double t) const override;
 
 private:
 

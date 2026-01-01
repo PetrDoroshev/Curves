@@ -3,20 +3,28 @@
 
 #include <sstream>
 #include <string>
+#include <cmath>
 #include "../Point3D.h"
 
 class Curve {
 
 public:
-    Curve(size_t id, const std::string& name, Point3D center): id(id), name(name), center(center) {};
+    Curve(size_t id, const std::string& name, const Point3D& center): id_(id), name_(name), center_(center) {};
 
     virtual ~Curve() = default;
-private:
 
-    size_t id;
-    std::string name;
-    
-    Point3D center;
+    virtual Point3D point(double t) const = 0;
+    virtual Point3D derivative(double t) const = 0;
+
+    size_t getId() const { return id_; };
+    std::string getName() const { return name_; };
+ 
+protected:
+
+    size_t id_;
+    std::string name_;
+
+    Point3D center_;
 
 };
 

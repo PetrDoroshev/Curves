@@ -9,13 +9,10 @@ public:
 
     ~Circle() = default;
 
-    Circle(size_t id, std::string name, Point3D center, double radius): Curve(id, name, center), radius(radius) {
+    Circle(size_t id, std::string name, Point3D center, double radius);
 
-        if (radius < 0) {
-            throw std::invalid_argument("Radius can't be negative");
-        }
-
-    };
+    Point3D point(double t) const override;
+    Point3D derivative(double t) const override;
 
 private:
 

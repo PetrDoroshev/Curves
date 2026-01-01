@@ -39,8 +39,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    std::cout << line_number << std::endl;
-
     std::vector<std::shared_ptr<Curve>> curves;
     curves.reserve(line_number);
 
@@ -48,13 +46,11 @@ int main(int argc, char* argv[]) {
 
         std::stringstream ss(line);
 
-        std::cout << line << "\n";
-
         char curve_type;
         std::string curve_name = "";
         size_t id = 0;
         Point3D center;
-        double radius;
+        double radius = 0.0;
 
         if (!(ss >> curve_type >> id >> std::quoted(curve_name) >> center.x >> 
                                                                    center.y >> 
@@ -62,6 +58,12 @@ int main(int argc, char* argv[]) {
                                                                    radius)) {
 
             std::cerr << "Unable to parse line: " << "\"" << line << "\"" << "\n";
+            return 1;
+        }
+
+        if (radius < 0) {
+            std::cout << radius << "\n";
+            std::cerr << "Radius can't be negative" << "\n";
             return 1;
         }
 
@@ -86,6 +88,15 @@ int main(int argc, char* argv[]) {
 
         }
     }
+
+    for (auto& c: curves) {
+        
+        std::cout << "id: " << c->getId() << "  name: " << c->getName() << "  " << c->point(M_PI / 4).toString()  << "\n";
+        
+
+    }
+
+
     
     return 0;
 }
