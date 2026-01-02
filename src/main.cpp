@@ -13,13 +13,13 @@
 
 int main(int argc, char* argv[]) {
 
-    if (argc < 1) {
+    if (argc <= 1) {
     
         std::cout << "Too few arguments" << std::endl;
         return 0;
     }
 
-    std::string path = "../examples/additional_curves_1.txt";
+    std::string path = argv[1];
     std::ifstream file(path);
 
     if (!file.is_open()) {
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
         }
 
         if (radius <= 0) {
-            std::cerr << "Radius can't be negative: id: " << id << "\n";
+            std::cerr << "Radius can't be negative. Curve with id: " << id << " will be ignored" << "\n";
             continue;
         }
 
@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
 
             if (minor_radius <= 0) {
                 
-                std::cerr << "Radius can't be negative: id: " << id << "\n";
+                std::cerr << "Radius can't be negative. Curve with id: " << id << " will be ignored" << "\n";
                 continue;
             }
 
