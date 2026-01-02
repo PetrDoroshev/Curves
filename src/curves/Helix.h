@@ -9,15 +9,15 @@ public:
 
     ~Helix() = default;
 
-    Helix(size_t id, std::string name, Point3D center, double radius, double step);
+    Helix(size_t id, const std::string& name, const Point3D& center, double radius, double step);
 
     Point3D point(double t) const override;
     Point3D derivative(double t) const override;
 
 private:
 
-    double radius;
-    double step;
+    double radius_;
+    double step_;
 
 };
 

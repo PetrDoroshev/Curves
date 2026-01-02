@@ -9,14 +9,16 @@ public:
 
     ~Circle() = default;
 
-    Circle(size_t id, std::string name, Point3D center, double radius);
+    Circle(size_t id, const std::string& name, const Point3D& center, double radius);
 
     Point3D point(double t) const override;
     Point3D derivative(double t) const override;
 
+    double getRadius() const;
+
 private:
 
-    double radius;
+    double radius_;
 
 };
 

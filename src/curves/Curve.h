@@ -4,7 +4,10 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <memory>
 #include "../Point3D.h"
+
+class Circle;
 
 class Curve {
 
@@ -18,12 +21,11 @@ public:
 
     size_t getId() const { return id_; };
     std::string getName() const { return name_; };
- 
+    
 protected:
 
     size_t id_;
     std::string name_;
-
     Point3D center_;
 
 };

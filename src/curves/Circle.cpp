@@ -1,8 +1,8 @@
 #include "Circle.h"
 
-Circle::Circle(size_t id, std::string name, Point3D center, double radius): Curve(id, name, center), radius(radius) {
+Circle::Circle(size_t id, const std::string& name, const Point3D& center, double radius): Curve(id, name, center), radius_(radius) {
 
-        if (radius < 0) {
+        if (radius <= 0) {
             throw std::invalid_argument("Radius can't be negative");
         }
 
@@ -11,8 +11,8 @@ Circle::Circle(size_t id, std::string name, Point3D center, double radius): Curv
 Point3D Circle::point(double t) const {
 
     return Point3D(
-        radius * std::cos(t) + center_.x,
-        radius * std::sin(t) + center_.y,
+        radius_ * std::cos(t) + center_.x,
+        radius_ * std::sin(t) + center_.y,
         center_.z
     );
 };
@@ -20,8 +20,12 @@ Point3D Circle::point(double t) const {
 Point3D Circle::derivative(double t) const {
 
     return Point3D(
-        radius * (-1 * std::sin(t)),
-        radius * std::cos(t),
+        radius_ * (-1 * std::sin(t)),
+        radius_ * std::cos(t),
         0 
     );
+};
+
+double Circle::getRadius() const {
+    return radius_;
 }
